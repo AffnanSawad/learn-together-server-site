@@ -12,7 +12,7 @@ app.use(express.json())
 
 // mongoDb
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 
 
@@ -64,6 +64,81 @@ async function run() {
 
 
     } )
+
+
+
+    // delete
+    app.delete("/creating/:id", async(req,res)=>{
+
+        const id = req.params.id;
+        console.log('deleted',id);
+
+        const query = { _id: new ObjectId(id) };
+        const result = await creatingCollection.deleteOne(query);
+
+        res.send(result);
+
+
+    }  )
+
+    // update.. 1.get . 2 .put
+      
+    app.get('/creating/:id', async(req,res)=>{
+
+        const id = req.params.id;
+      
+        // console.log(id);
+      
+      
+        const query = { _id: new ObjectId(id) };
+      
+        const result = await creatingCollection.findOne(query);
+      
+        res.send(result);
+      
+      
+      
+          }  )
+
+
+
+          app.put('/creating/:id',async(req,res)=>{
+
+            const id = req.params.id;
+          
+            const user = req.body;
+          
+            console.log(id,user);
+          
+            const query = { _id: new ObjectId(id) };
+          
+            const options = { upsert: true };
+          
+            const updateDoc = {
+              $set: {
+              
+            name:user.name,
+            subject:user.subject,
+            marks:user.marks,
+            photo:user.photo
+          
+          
+          
+              },
+            };
+                   
+            const result = await creatingCollection.updateOne(query, updateDoc, options);
+          
+            res.send(result);
+        
+          
+              } )
+          
+          
+          
+      
+      
+         
 
 
 
