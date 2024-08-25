@@ -100,7 +100,7 @@ async function run() {
       
           }  )
 
-
+        // update . part : 2 => PUT 
 
           app.put('/creating/:id',async(req,res)=>{
 
